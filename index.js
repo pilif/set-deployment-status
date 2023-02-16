@@ -1,5 +1,6 @@
 const core = require('@actions/core');
-const { GitHub, context } = require('@actions/github');
+const github = require('@actions/github');
+const context = github.context;
 
 function parseState(state) {
   if (state === 'true') {
@@ -43,12 +44,12 @@ async function main() {
     req['log_url'] = log_url;
   }
 
-  const github = new GitHub(
+  const octokit = github.getOctokit(
     process.env.GITHUB_TOKEN,
     { previews: ["ant-man-preview", "flash-preview"]});
 
   core.debug(JSON.stringify(req));
-  const resp = await github.repos.createDeploymentStatus(req);
+  const resp = await octokit.rest.repos.createDeploymentStatus(req);
   core.debug(JSON.stringify(resp));
 
   core.setOutput('deployment_status_id', resp.data.id.toString());
