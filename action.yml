@@ -40,5 +40,5 @@ outputs:
     description: The API url of the newly created deployment status.
 
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
